@@ -8,7 +8,7 @@ import axios from "axios";
 const store = createStore({
   state: {
     searchInput: "",
-    stockData: "facebook",
+    stockData: [],
     timeSeries: "TIME_SERIES_DAILY",
     autoCompleteArr: [],
   },
@@ -68,18 +68,15 @@ const store = createStore({
         const response = await axios.request(url, options);
         const data = response.data;
         console.log("in store", data);
-        // commit("SET_AUTO_COMPLETE_ARRAY", data);
-        let arrayData = Object.keys(data[context.getters.timeSeriesName]).map(
-          (item) => ({
-            [item]: data[context.getters.timeSeriesName][item],
-          })
-        );
-        console.log("data", arrayData, arrayData.length);
-        context.commit("SET_STOCK_DATA", arrayData);
-        // router.push({
-        //   name: "StockSearchResult",
-        //   params: { symbol: context.state.searchInput },
-        // });
+        // let stockData = data[context.getters.timeSeriesName];
+        // console.log("stoxkDta", stockData);
+        // let arrayData = Object.keys(data[context.getters.timeSeriesName]).map(
+        //   (item) => ({
+        //     [item]: data[context.getters.timeSeriesName][item],
+        //   })
+        // );
+        // console.log("data", arrayData, arrayData.length);
+        context.commit("SET_STOCK_DATA", data);
       } catch (error) {
         console.error("Error in fetching stock data", error);
       }

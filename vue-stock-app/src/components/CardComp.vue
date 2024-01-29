@@ -2,12 +2,16 @@
 import { useStore } from "vuex";
 
 const store = useStore();
-const stockDataLastDayInfo =
-  store.state.stockData[0][Object.keys(store.state.stockData[0])];
-console.log(
-  "in cards",
-  store.state.stockData[0][Object.keys(store.state.stockData[0])]
+
+let arrayData = Object.keys(store.state.stockData["Time Series (Daily)"]).map(
+  (item) => ({
+    [item]: store.state.stockData["Time Series (Daily)"][item],
+  })
 );
+console.log("arr", arrayData);
+const stockDataLastDayInfo = arrayData["0"][Object.keys(arrayData["0"])];
+console.log("in cards", stockDataLastDayInfo);
+//   [Object.keys(store.state.stockData[0])]
 </script>
 
 <template>

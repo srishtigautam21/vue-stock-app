@@ -17,7 +17,6 @@ const handleInputChange = (event) => {
         class="w-96 h-8 outline-none p-5 rounded-lg"
       />
     </div>
-    <div>sign in</div>
     <!-- </ul> -->
   </nav>
 </template>
