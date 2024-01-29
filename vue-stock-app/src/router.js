@@ -9,8 +9,8 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/stock",
-    name: "Stock",
+    path: "/stock/:symbol",
+    name: "StockSearchResult",
     component: StockPage,
   },
 ];
