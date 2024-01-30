@@ -11,6 +11,11 @@ const store = createStore({
     stockData: [],
     timeSeries: "TIME_SERIES_DAILY",
     autoCompleteArr: [],
+    loading: false,
+    alertStatus: {
+      status: false,
+      message: null,
+    },
   },
   mutations: {
     SET_SEARCH_INPUT(state, payload) {
@@ -25,6 +30,12 @@ const store = createStore({
     SET_TIME_SERIES(state, payload) {
       state.timeSeries = payload;
     },
+    SET_LOADING(state, payload) {
+      state.loading = payload;
+    },
+    SET_ALERT_STATUS(state, payload) {
+      state.alertStatus = { ...state.alertStatus, ...payload };
+    },
   },
   actions: {
     // fetchSearchSymbol({ commit }) {
@@ -36,23 +47,37 @@ const store = createStore({
     //   //   context.commit("SET_AUTO_COMPLETE_ARRAY", data);
     // },
     async fetchSearchSymbol(context) {
+      const url = "http://localhost:3000/stock/stockSymbol";
+      const query = {
+        symbol: context.state.searchInput,
+      };
+      const options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: query,
+      };
       try {
-        const url = "http://localhost:3000/stock/stockSymbol";
-        const response = await axios.get(url);
+        const response = await axios.request(url, options);
         const data = response.data;
-        console.log("in store", data);
-        // commit("SET_AUTO_COMPLETE_ARRAY", data);
+        console.log("in store symbols", data);
+        context.commit("SET_AUTO_COMPLETE_ARRAY", data);
         console.log(context);
-        context.commit("SET_SEARCH_INPUT", data);
+        // context.commit("SET_SEARCH_INPUT", data);
       } catch (error) {
         console.error("Error fetching search symbols:", error);
         // Handle error as needed
       }
     },
     async fetchSearchStock(context) {
+      context.commit("SET_LOADING", true);
+      console.log("loading in store", context.state.loading);
       const url = `http://localhost:3000/stock/stockSearch`;
       const query = {
         function: context.state.timeSeries,
+        // function: localStorage.getItem("searchInput"),
+        // symbol: localStorage.getItem("timeSeries"),
         symbol: context.state.searchInput,
       };
       const options = {
@@ -77,7 +102,14 @@ const store = createStore({
         // );
         // console.log("data", arrayData, arrayData.length);
         context.commit("SET_STOCK_DATA", data);
+        context.commit("SET_LOADING", false);
       } catch (error) {
+        console.log("in error", context.state.alertStatus);
+        context.commit("SET_ALERT_STATUS", {
+          status: true,
+          message:
+            "Invalid API call. Please retry with a different symbol like IBM or googl",
+        });
         console.error("Error in fetching stock data", error);
       }
     },

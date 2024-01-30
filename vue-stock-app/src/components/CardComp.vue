@@ -1,17 +1,40 @@
 <script setup>
 import { useStore } from "vuex";
+// import { useToast } from "vue-toastification";
 
 const store = useStore();
+// const toast = useToast;
+const {
+  state: { stockData },
+  getters: { timeSeriesName },
+} = store;
 
-let arrayData = Object.keys(store.state.stockData["Time Series (Daily)"]).map(
-  (item) => ({
-    [item]: store.state.stockData["Time Series (Daily)"][item],
-  })
-);
+// if (stockData.length == 0 || timeSeriesName === "") {
+//   toast(
+//     "You exceeded API query limit. Please wait press the back button and reload again.",
+//     {
+//       position: "center",
+//       timeout: 5000,
+//       closeOnClick: true,
+//       pauseOnFocusLoss: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//       draggablePercent: 0.6,
+//       showCloseButtonOnHover: false,
+//       hideProgressBar: true,
+//       closeButton: "button",
+//       icon: "fas fa-rocket",
+//       rtl: false,
+//     }
+//   );
+// } else {
+let arrayData = Object.keys(stockData[timeSeriesName]).map((item) => ({
+  [item]: stockData[timeSeriesName][item],
+}));
 console.log("arr", arrayData);
 const stockDataLastDayInfo = arrayData["0"][Object.keys(arrayData["0"])];
 console.log("in cards", stockDataLastDayInfo);
-//   [Object.keys(store.state.stockData[0])]
+// }
 </script>
 
 <template>
@@ -21,7 +44,7 @@ console.log("in cards", stockDataLastDayInfo);
     <div class="bg-orange text-white p-5 shadow-shadow">
       <p class="mb-2">OPEN ($)</p>
       <p class="font-extrabold text-xl">
-        {{ Number(stockDataLastDayInfo["1. open"]) }}
+        {{ Number(stockDataLastDayInfo["1. open"]).toLocaleString("en-US") }}
       </p>
     </div>
     <!-- Card for showing the last HIGH data -->

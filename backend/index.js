@@ -14,10 +14,26 @@ app.get("/", (req, res) => {
 });
 
 app.get("/stock/stockSymbol", async (req, res) => {
-  const searchUrl =
-    "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=Y7DMEJSF39VYK876";
+  const symbol = req.query.symbol;
+  console.log("in symbol server", symbol);
+  const searchUrl = `https://alpha-vantage.p.rapidapi.com/query?function=SYMBOL_SEARCH&keywords=microsoft&datatype=json`;
+  const options = {
+    method: "GET",
+    // url: 'https://alpha-vantage.p.rapidapi.com/query',
+    // params: {
+    //   keywords: 'microsoft',
+    //   function: 'SYMBOL_SEARCH',
+    //   datatype: 'json'
+    // },
+    headers: {
+      "X-RapidAPI-Key": "fb607afe8dmshdf0cff56cbfcdc8p17c5d5jsn7efdc2db7c42",
+      "X-RapidAPI-Host": "alpha-vantage.p.rapidapi.com",
+    },
+  };
+  // const searchUrl =
+  //   "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=Y7DMEJSF39VYK876";
   try {
-    const response = await fetch(searchUrl);
+    const response = await fetch(searchUrl, options);
     const data = await response.json();
     // console.log("data", data);
     const bestMatches = data.bestMatches.map((match) => match["2. name"]);

@@ -1,18 +1,17 @@
 <script setup>
 import { useStore } from "vuex";
-const store = useStore();
+import { reactive, ref, watch } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 // import { createChart } from "lightweight-charts";
-
+const store = useStore();
 const { state, getters } = store;
 const { stockData } = state;
 const { timeSeriesName } = getters;
 console.log(stockData, timeSeriesName);
-let formattedData = [];
-// let orderedData = [];
-// Object.entries(stockData[timeSeriesName]).map((entry) => {
-//   console.log(entry);
-// });
+const formattedData = [];
+
+const timeSeries = ref("TIME_SERIES_DAILY");
+
 const formattedStockData = () => {
   Object.entries(stockData[timeSeriesName]).map(([key, value]) => {
     // formattedData.push({
@@ -33,33 +32,12 @@ const formattedStockData = () => {
         value["5. volume"],
       ],
     });
-    // const order = ["time", "open", "high", "low", "close", "volume"];
-
-    //     orderedData = Object.fromEntries(
-    //       order.map((k, index) => [k, formattedData[index][k]])
-    //     );
   });
-  //   let dataArray = store?.state?.stockData.map((item) => {
-  //     console.log("time: ", Object.keys(item));
-  //     return {
-  //       time: Object.keys(item),
-  //       open: item[Object.keys(item)]["1. open"],
-  //       jigh: item[Object.keys(item)]["2. high"],
-  //       low: item[Object.keys(item)]["3. low"],
-  //       close: item[Object.keys(item)]["4. close"],
-  //       volume: item[Object.keys(item)]["5. volume"],
-  //     };
-  //   });
-  //   const order = ["time", "open", "high", "low", "close", "volume"];
 
-  //   const orderedData = Object.fromEntries(
-  //     order.map((key, index) => [key, formattedData[index][key]])
-  //   );
-  //   console.log("irdered", orderedData);
   return formattedData;
   //   return orderedData;
 };
-let chartOptions = {
+let chartOptions = reactive({
   chart: {
     type: "candlestick",
     height: 350,
@@ -76,30 +54,31 @@ let chartOptions = {
       enabled: true,
     },
   },
-};
-const series = [
+});
+const series = ref([
   {
     data: formattedStockData(),
   },
-];
+]);
 // console.log(formattedStockData());
-const handleBtnClick = (e) => {
-  console.log(e.target.value);
-  store.commit("SET_TIME_SERIES", e.target.value);
-  store.dispatch("fetchSearchStock");
-};
-// const chart = createChart(document.body, { width: 400, height: 300 });
-// const candlestickSeries = chart.addCandlestickSeries({
-//   upColor: "#26a69a",
-//   downColor: "#ef5350",
-//   borderVisible: false,
-//   wickUpColor: "#26a69a",
-//   wickDownColor: "#ef5350",
-// });
-// candlestickSeries.setData(formattedStockData());
-// chart.timeScale().fitContent();
-</script>
+watch(timeSeries, () => {
+  console.log(timeSeries.value);
+  store.commit("SET_TIME_SERIES", timeSeries.value);
 
+  store.dispatch("fetchSearchStock");
+  series.value = [
+    {
+      data: formattedStockData(),
+    },
+  ];
+});
+// const handleBtnClick = (e) => {
+//   console.log(e.target.value);
+//   store.commit("SET_TIME_SERIES", e.target.value);
+//   store.dispatch("fetchSearchStock");
+// };
+</script>
+<!-- @change="handleBtnClick" -->
 <template>
   <div class="flex items-center justify-center mt-10 mb-10 relative">
     <VueApexCharts
@@ -108,6 +87,7 @@ const handleBtnClick = (e) => {
       type="candlestick"
       :options="chartOptions"
       :series="series"
+      :key="JSON.stringify(series)"
     ></VueApexCharts>
     <div
       class="absolute bottom-96 left-72 gap-5 w-80 flex items-center justify-center border-slate-300 rounded-2xl"
@@ -119,8 +99,7 @@ const handleBtnClick = (e) => {
         name="option"
         id="daily"
         value="TIME_SERIES_DAILY"
-        @change="handleBtnClick"
-        checked
+        :checked="timeSeries === 'TIME_SERIES_DAILY'"
       />
       <label class="w-18 text-center" for="daily">Daily</label>
       <span>|</span>
@@ -130,8 +109,8 @@ const handleBtnClick = (e) => {
         type="radio"
         name="option"
         id="weekly"
-        @change="handleBtnClick"
         value="TIME_SERIES_WEEKLY"
+        :checked="timeSeries === 'TIME_SERIES_WEEKLY'"
       />
       <label lass="w-18 text-center" for="weekly">Weekly</label>
       <span>|</span>
@@ -141,7 +120,6 @@ const handleBtnClick = (e) => {
         type="radio"
         name="option"
         id="monthly"
-        @change="handleBtnClick"
         value="TIME_SERIES_MONTHLY"
       />
       <label lass="w-18 text-center" for="monthly">Monthly</label>

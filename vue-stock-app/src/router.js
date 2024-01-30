@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "./views/HomePage.vue"; // Import your views/components
-import StockPage from "./views/StockPage.vue"; // Import your views/components
+// import StockPage from "./views/StockPage.vue";
 
 const routes = [
   {
@@ -11,7 +11,8 @@ const routes = [
   {
     path: "/stock/:symbol",
     name: "StockSearchResult",
-    component: StockPage,
+    component: () => import("./views/StockPage.vue"),
+    // StockPage,
   },
 ];
 
