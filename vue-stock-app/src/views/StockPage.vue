@@ -30,9 +30,6 @@ if (stockData.length === 0) {
   <div
     class="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 relative"
   >
-    <div
-      class="absolute top-0 left-0 right-0 bottom-0 bg-gray-500 z-50 opacity-50"
-    ></div>
     <h1 class="text-lg text-text2 font-bold mt-5 p-5">
       {{ searchInput }} Last Market Session {{ timeSeries }} Information
     </h1>
