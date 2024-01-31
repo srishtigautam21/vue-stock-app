@@ -5,7 +5,6 @@
 </template>
 
 <style scoped>
-/* HTML: <div class="loader"></div> */
 .background {
   display: flex;
   align-items: center;

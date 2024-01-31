@@ -8,7 +8,7 @@ const {
   state: { stockData },
   getters: { timeSeriesName },
 } = store;
-
+console.log(stockData.length);
 // if (stockData.length == 0 || timeSeriesName === "") {
 //   toast(
 //     "You exceeded API query limit. Please wait press the back button and reload again.",
@@ -28,13 +28,19 @@ const {
 //     }
 //   );
 // } else {
-let arrayData = Object.keys(stockData[timeSeriesName]).map((item) => ({
-  [item]: stockData[timeSeriesName][item],
-}));
-console.log("arr", arrayData);
-const stockDataLastDayInfo = arrayData["0"][Object.keys(arrayData["0"])];
-console.log("in cards", stockDataLastDayInfo);
-// }
+let arrayData = [];
+let stockDataLastDayInfo = [];
+if (stockData.length === 0) {
+  arrayData = [];
+} else if (stockData.length === undefined) {
+  arrayData = Object.keys(stockData[timeSeriesName]).map((item) => ({
+    [item]: stockData[timeSeriesName][item],
+  }));
+  console.log("arr", arrayData);
+  stockDataLastDayInfo = arrayData["0"][Object.keys(arrayData["0"])];
+  console.log("in cards", stockDataLastDayInfo);
+  // }
+}
 </script>
 
 <template>
@@ -43,35 +49,35 @@ console.log("in cards", stockDataLastDayInfo);
     <!-- Card for showing the last OPEN data -->
     <div class="bg-orange text-white p-5 shadow-shadow">
       <p class="mb-2">OPEN ($)</p>
-      <p class="font-extrabold text-xl">
+      <p v-if="stockDataLastDayInfo" class="font-extrabold text-xl">
         {{ Number(stockDataLastDayInfo["1. open"]).toLocaleString("en-US") }}
       </p>
     </div>
     <!-- Card for showing the last HIGH data -->
     <div class="bg-lightPurple text-white p-5 shadow-shadow">
       <p class="mb-2">HIGH ($)</p>
-      <p class="font-extrabold text-xl">
+      <p v-if="stockDataLastDayInfo" class="font-extrabold text-xl">
         {{ Number(stockDataLastDayInfo["2. high"]).toLocaleString("en-US") }}
       </p>
     </div>
     <!-- Card for showing the last LOW data -->
     <div class="bg-green text-white p-5 shadow-shadow">
       <p class="mb-2">LOW ($)</p>
-      <p class="font-extrabold text-xl">
+      <p v-if="stockDataLastDayInfo" class="font-extrabold text-xl">
         {{ Number(stockDataLastDayInfo["3. low"]).toLocaleString("en-US") }}
       </p>
     </div>
     <!-- Card for showing the last CLOSE data -->
     <div class="bg-mypink text-white p-5 shadow-shadow">
       <p class="mb-2">CLOSE ($)</p>
-      <p class="font-extrabold text-xl">
+      <p v-if="stockDataLastDayInfo" class="font-extrabold text-xl">
         {{ Number(stockDataLastDayInfo["4. close"]).toLocaleString("en-US") }}
       </p>
     </div>
     <!-- Card for showing the last VOLUME data -->
     <div class="bg-blue text-white p-5 shadow-shadow">
       <p class="mb-2">VOLUME ($)</p>
-      <p class="font-extrabold text-xl">
+      <p v-if="stockDataLastDayInfo" class="font-extrabold text-xl">
         {{ Number(stockDataLastDayInfo["5. volume"]).toLocaleString("en-US") }}
       </p>
     </div>

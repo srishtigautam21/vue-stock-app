@@ -2,14 +2,27 @@
 import HeaderComp from "../components/HeaderComp.vue";
 import CardComp from "@/components/CardComp.vue";
 import CandleStickChart from "@/components/CandleStickChart.vue";
-import LoadersComponent from "@/components/LoadersComponent.vue";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
+
 const store = useStore();
+const router = useRouter();
 const { state } = store;
-const { searchInput, loading, stockData } = state;
-// const { timeSeriesName } = getters;
+const { searchInput, stockData } = state;
+
+console.log("In stocks page", stockData.length);
+const showComp = ref(true);
 const timeSeries = computed(() => store.getters.timeSeriesName);
+if (stockData.length === 0) {
+  showComp.value = false;
+  router.push({
+    name: "Home",
+    path: "/",
+  });
+} else if (stockData.length === undefined) {
+  showComp.value = true;
+}
 </script>
 
 <template>
@@ -19,14 +32,11 @@ const timeSeries = computed(() => store.getters.timeSeriesName);
   >
     <div
       class="absolute top-0 left-0 right-0 bottom-0 bg-gray-500 z-50 opacity-50"
-      v-if="loading"
-    >
-      <LoadersComponent></LoadersComponent>
-    </div>
-    <h1 class="text-lg text-text2 font-bold mb-5 mt-5 p-5">
+    ></div>
+    <h1 class="text-lg text-text2 font-bold mt-5 p-5">
       {{ searchInput }} Last Market Session {{ timeSeries }} Information
     </h1>
     <CardComp v-show="stockData" />
-    <CandleStickChart />
+    <CandleStickChart v-if="showComp" />
   </div>
 </template>

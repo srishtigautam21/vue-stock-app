@@ -47,7 +47,7 @@ app.get("/stock/stockSymbol", async (req, res) => {
 });
 
 app.get("/stock/stockSearch", async (req, res) => {
-  console.log("inserver", req.query);
+  // console.log("inserver", req.query);
   // query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=Y7DMEJSF39VYK876
   const timeSeries = req.query.function;
   const symbol = req.query.symbol;
@@ -69,7 +69,7 @@ app.get("/stock/stockSearch", async (req, res) => {
   try {
     const response = await fetch(searchUrl, options);
     const data = await response.json();
-
+    console.log(data, "in server");
     res.status(200).json(data);
   } catch (e) {
     res.status(500).send({
