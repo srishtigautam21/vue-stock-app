@@ -8,9 +8,8 @@ const store = useStore();
 const { state, getters } = store;
 const { stockData } = state;
 const { timeSeriesName } = getters;
-console.log(stockData, timeSeriesName);
-const formattedData = [];
 
+const formattedData = [];
 const timeSeries = ref("TIME_SERIES_DAILY");
 
 const formattedStockData = () => {
@@ -27,8 +26,6 @@ const formattedStockData = () => {
     });
   });
 
-  // let slicedData = formattedData.slice(0, 50);
-  // console.log(slicedData, timeSeriesName);
   return formattedData;
 };
 let chartOptions = reactive({
@@ -49,14 +46,12 @@ let chartOptions = reactive({
   },
 });
 const series = computed(() => [
-  //ref
   {
     data: formattedStockData(),
   },
 ]);
 
 watch(timeSeries, () => {
-  console.log("inside watch", timeSeries.value);
   store.commit("SET_TIME_SERIES", timeSeries.value);
   store.dispatch("fetchSearchStock");
   series.value = [
@@ -121,7 +116,6 @@ onMounted(
       />
       <label class="w-18 text-center" for="monthly">Monthly</label>
     </div>
-    <!-- <div>{{ chartOptions }}</div> -->
   </div>
 </template>
 
@@ -129,7 +123,7 @@ onMounted(
 .input {
   display: none;
 }
-input:checked + label {
+.input:checked + label {
   font-weight: bold;
 }
 label {

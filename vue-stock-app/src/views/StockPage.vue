@@ -11,7 +11,6 @@ const router = useRouter();
 const { state } = store;
 const { searchInput, stockData } = state;
 
-console.log("In stocks page", stockData.length);
 const showComp = ref(true);
 const timeSeries = computed(() => store.getters.timeSeriesName);
 if (stockData.length === 0) {

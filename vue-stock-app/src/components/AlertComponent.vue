@@ -4,23 +4,14 @@ const store = useStore();
 const { state } = store;
 
 const alertMessage = state.alertStatus.message;
-console.log(alertMessage, "alertMessage");
 
 const handleCrossBtn = () => {
   store.commit("SET_ALERT_STATUS", { status: false, message: "" });
   store.commit("SET_SEARCH_INPUT", "");
-  console.log("After cross Bt click", alertMessage);
 };
-// When the alert status is true in Vuex this component is visible for 3 seconds after created and then disappears
-
-// setTimeout(
-//   () => store.commit("SET_ALERT_STATUS", { status: false, message: "" }),
-//   3000
-// );
 </script>
 
 <template>
-  <!-- This is the alert component for unauthorized route navigation -->
   <div class="alert-component">
     <div class="alert-box">
       <span class="icon">&#9888;</span>
@@ -38,7 +29,6 @@ const handleCrossBtn = () => {
   width: 100%;
   height: 100%;
   background-color: rgb(212, 210, 210);
-  /* opacity: 0.7; */
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   display: flex;
@@ -49,7 +39,6 @@ const handleCrossBtn = () => {
 .alert-box {
   width: 40%;
   z-index: 1000;
-  /* opacity: 1; */
   height: fit-content;
   padding: 50px 30px;
   font-size: 20px;

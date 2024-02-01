@@ -1,33 +1,12 @@
 <script setup>
 import { useStore } from "vuex";
-// import { useToast } from "vue-toastification";
-
 const store = useStore();
-// const toast = useToast;
+
 const {
   state: { stockData },
   getters: { timeSeriesName },
 } = store;
-console.log(stockData.length);
-// if (stockData.length == 0 || timeSeriesName === "") {
-//   toast(
-//     "You exceeded API query limit. Please wait press the back button and reload again.",
-//     {
-//       position: "center",
-//       timeout: 5000,
-//       closeOnClick: true,
-//       pauseOnFocusLoss: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//       draggablePercent: 0.6,
-//       showCloseButtonOnHover: false,
-//       hideProgressBar: true,
-//       closeButton: "button",
-//       icon: "fas fa-rocket",
-//       rtl: false,
-//     }
-//   );
-// } else {
+
 let arrayData = [];
 let stockDataLastDayInfo = [];
 if (stockData.length === 0) {
@@ -36,10 +15,7 @@ if (stockData.length === 0) {
   arrayData = Object.keys(stockData[timeSeriesName]).map((item) => ({
     [item]: stockData[timeSeriesName][item],
   }));
-  console.log("arr", arrayData);
   stockDataLastDayInfo = arrayData["0"][Object.keys(arrayData["0"])];
-  console.log("in cards", stockDataLastDayInfo);
-  // }
 }
 </script>
 

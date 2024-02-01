@@ -27,36 +27,11 @@ const store = createStore({
     },
   },
   actions: {
-    // async fetchSearchSymbol(context) {
-    //   const url = "http://localhost:3000/stock/stockSymbol";
-    //   const query = {
-    //     symbol: context.state.searchInput,
-    //   };
-    //   const options = {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     params: query,
-    //   };
-    //   try {
-    //     const response = await axios.request(url, options);
-    //     const data = response.data;
-    //     console.log("in store symbols", data);
-    //     context.commit("SET_AUTO_COMPLETE_ARRAY", data);
-    //     console.log(context);
-    //     // context.commit("SET_SEARCH_INPUT", data);
-    //   } catch (error) {
-    //     console.error("Error fetching search symbols:", error);
-    //     // Handle error as needed
-    //   }
-    // },
+    //Api call to the server is made here
     async fetchSearchStock(context) {
       const url = `http://localhost:3000/stock/stockSearch`;
       const query = {
         function: context.state.timeSeries,
-        // function: localStorage.getItem("searchInput"),
-        // symbol: localStorage.getItem("timeSeries"),
         symbol: context.state.searchInput,
       };
       const options = {
@@ -69,18 +44,7 @@ const store = createStore({
       try {
         const response = await axios.request(url, options);
         const data = response.data;
-        console.log("in store", data);
-        console.log(data["Error Message"]);
-        // let stockData = data[context.getters.timeSeriesName];
-        // console.log("stoxkDta", stockData);
-        // let arrayData = Object.keys(data[context.getters.timeSeriesName]).map(
-        //   (item) => ({
-        //     [item]: data[context.getters.timeSeriesName][item],
-        //   })
-        // );
-        // console.log("data", arrayData, arrayData.length);
         if (data["Error Message"]) {
-          console.log("error");
           context.commit("SET_ALERT_STATUS", {
             status: true,
             message:
@@ -90,9 +54,7 @@ const store = createStore({
         } else {
           context.commit("SET_STOCK_DATA", data);
         }
-        // return true;
       } catch (error) {
-        console.log("in error", context.state.alertStatus);
         context.commit("SET_ALERT_STATUS", {
           status: true,
           message:
