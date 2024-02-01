@@ -81,7 +81,7 @@ onMounted(
       :key="JSON.stringify(series)"
     ></VueApexCharts>
     <div
-      class="absolute bottom-96 left-72 gap-5 w-80 flex items-center justify-center border-slate-300 rounded-2xl"
+      class="absolute bottom-96 left-1/3 gap-5 w-80 flex items-center justify-center border-slate-300 rounded-2xl"
     >
       <input
         class="input"
