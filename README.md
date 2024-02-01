@@ -9,7 +9,7 @@
    Then type /stock/stocksearch after the base url in browser
 3. cd vue-stock-app then npm install and npm run serve. This would start your frontend.
 
-### Compiles and hot-reloads for development
+### Why it hasn't been deployed
 
 Don't know what issue was coming in deployment on heroku, vercel and digital Ocean. Tried it 
 multiple times but some or the other error came. Thats why wasn't able to host the live link any where.
