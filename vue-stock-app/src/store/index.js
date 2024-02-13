@@ -29,7 +29,8 @@ const store = createStore({
   actions: {
     //Api call to the server is made here
     async fetchSearchStock(context) {
-      const url = `http://localhost:3000/stock/stockSearch`;
+      // const url = `http://localhost:3000/stock/stockSearch`;
+      const url = `stock/stockSearch`;
       const query = {
         function: context.state.timeSeries,
         symbol: context.state.searchInput,
