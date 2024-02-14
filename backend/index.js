@@ -6,7 +6,17 @@ const cors = require("cors");
 const port = process.env.VUE_APP_PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors());
+}
+
+// if (process.env.NODE_ENV === "production") {
+//static folder
+app.use(express.static(__dirname + "/public"));
+// app.use(express.static(path.join(process.cwd(), "public")));
+
+// app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
+// }
 
 app.get("/", (req, res) => {
   res.status(200).send({
@@ -37,12 +47,10 @@ app.get("/stock/stockSearch", async (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV === "production") {
-  //static folder
-  app.use(express.static(__dirname + "/public"));
-
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
-}
+app.use(function (req, res, next) {
+  // res.sendFile(path.join(process.cwd(), "public", "index.html"));
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 app.listen(port, () => {
   console.log(`Server running on ${port}`);
